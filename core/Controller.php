@@ -3,9 +3,11 @@
  * Controller
  */
 class Controller{
-    
     public $request;            // Objet Request
-    
+    private $vars = array();    // Variables à passer à la vue
+    public $layout = 'default'; // Layout à utiliser pour rendre la vue
+    private $rendered = false;  // Si le rendu a été fait ou pas ?
+
     /**
      * Constructeur
      * @param $request Objet request de notre application
