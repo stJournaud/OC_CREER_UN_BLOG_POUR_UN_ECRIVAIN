@@ -3,6 +3,7 @@
  * Controller
  */
 class Controller{
+
     public $request;            // Objet Request
     private $vars = array();    // Variables à passer à la vue
     public $layout = 'default'; // Layout à utiliser pour rendre la vue
@@ -68,8 +69,8 @@ class Controller{
 			}
 		}
 
-    }
-    
+	}
+
     /**
      * Permet de gérer les erreurs 404
      */
@@ -89,4 +90,15 @@ class Controller{
         $c = new $controller();
         return $c->$action();
     }
+
+    /**
+     * Permet de rediriger sur une autre page
+     */
+    function redirect($url,$code = null){
+		if($code == 301){
+			header("HTTP/1.1 301 Moved Permanently");
+		}
+		header("Location: ".Router::url($url)); 
+	}
 }
+?>

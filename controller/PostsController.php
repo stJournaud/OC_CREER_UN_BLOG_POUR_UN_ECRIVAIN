@@ -17,7 +17,7 @@ class PostsController extends Controller {
         $d['page'] = ceil($d['total']/ $perPage);
         $this->set($d);
     }
-
+    
     /**
 	* Affiche un article en particulier
 	**/
@@ -40,6 +40,42 @@ class PostsController extends Controller {
             'order' => 'comment_date DESC',
         ));
         $this->set($d);
+    }
+
+    /**
+     * Ajouter un commentaire
+     */
+    function addComment($id, $slug){
+        $this->loadModel('Comment');
+        if($this->request->data){
+            if($this->Comment->validates($this->request->data)){
+            $this->request->data->id_post = $id;
+            $this->request->data->comment_date = date('Y-m-d h:i:s');
+            $this->Comment->save($this->request->data);
+            $this->redirect("posts/view/id:$id/slug:$slug", 301);
+            } else {
+                $this->Session->setFlash('Merci de corriger vos informations ', 'danger');
+                $this->redirect("posts/view/id:$id/slug:$slug", 301);
+            }
+        }
+    }
+
+    /**
+     * Signaler un commentaire
+     */
+    function report($id, $slug, $post_id) {
+        $this->loadModel('Comment');
+        $d['id'] = '';
+        if($id) {
+            $this->request->data = $this->Comment->findFirst(array(
+                'conditions' => array('id'=>$id)
+            ));
+            $this->request->data->report = 1;
+            $this->Comment->save($this->request->data);
+            $d['id'] = $id;
+            $this->Session->setFlash('Merci d\'avoir signalé ce commentaire ', 'success');
+            $this->redirect("posts/view/id:$post_id/slug:$slug", 301);
+        }
     }
 
     /**
