@@ -11,4 +11,15 @@ class PagesController extends Controller {
         $this->set($d);
 
     }
+
+    /**
+     * Permet de  récupérer les pages pour le menu
+     */
+    function getMenu(){
+        $this->loadModel('Post');
+        return $this->Post->find(array(
+            'conditions' => array('online' => 1, 'type'=>'page')
+        ));
+    }
+
 }

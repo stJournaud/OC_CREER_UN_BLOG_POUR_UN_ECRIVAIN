@@ -55,7 +55,7 @@ class Controller{
         }
     }
 
-        /**
+    /**
      * Permet de charger un model
      */
 	function loadModel($name){
@@ -68,5 +68,25 @@ class Controller{
 			}
 		}
 
-	}
+    }
+    
+    /**
+     * Permet de gérer les erreurs 404
+     */
+    function e404($message){
+        header("HTTP/1.0 404 Not Found");
+        $this->set('message', $message);
+        $this->render('/errors/404');
+        die();
+    }
+
+    /**
+     * Permet d'appeler un controller depuis une vue
+     */
+    function request($controller, $action){
+        $controller .= 'Controller';
+        require_once ROOT.DS.'controller'.DS.$controller.'.php';
+        $c = new $controller();
+        return $c->$action();
+    }
 }
