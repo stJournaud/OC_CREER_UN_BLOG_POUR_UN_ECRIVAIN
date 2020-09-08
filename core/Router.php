@@ -1,5 +1,6 @@
 <?php
 class Router {
+    static $routes = array();
 
     /**
      * Permet de parser une url
