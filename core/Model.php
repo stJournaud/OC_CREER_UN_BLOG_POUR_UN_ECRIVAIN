@@ -11,10 +11,12 @@ class Model{
     public $errors = array();
     public $form;
     public $validate = array();
+
     /**
 	* Permet d'initialiser les variable du Model
 	**/
     public function __construct(){
+
     // Nom de la table
     if($this->table === false){
         $this->table = strtolower(get_class($this)).'s';
@@ -47,6 +49,34 @@ class Model{
             
     }
 
+    /**
+	* Permet de valider des données
+	* @param $data données à valider 
+	**/
+	function validates($data){
+		$errors = array(); 
+		foreach($this->validate as $k=>$v){
+				if(!isset($data->$k)){
+					$errors[$k] = $v['message']; 
+				}else{
+					if($v['rule'] == 'notEmpty'){
+						if(empty($data->$k)){
+							$errors[$k] = $v['message']; 
+						}
+					}elseif(!preg_match('/^'.$v['rule'].'$/',$data->$k)){
+						$errors[$k] = $v['message'];
+					}
+				}
+		}
+		$this->errors = $errors; 
+		if(isset($this->Form)){
+			$this->Form->errors = $errors; 
+		}
+		if(empty($errors)){
+			return true;
+		}
+		return false;
+    }
 
     /**
 	* Permet de récupérer plusieurs enregistrements
