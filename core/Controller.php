@@ -39,4 +39,17 @@ class Controller{
         require ROOT.DS.'view'.DS.'layout'.DS.$this->layout.'.php';
         $this->rendered = true;
     }
+
+    /**
+     * Permet de passer une ou plusieurs variables à la vue
+     * @param $key nom de la variable OU tableau de variables
+     * @param $value Valeur de la variable
+     */
+    public function set($key,$value=null) {
+        if(is_array($key)){
+            $this->vars += $key;
+        } else {
+            $this->vars[$key] = $value;
+        }
+    }
 }
