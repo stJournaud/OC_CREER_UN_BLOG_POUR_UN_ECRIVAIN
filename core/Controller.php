@@ -54,4 +54,19 @@ class Controller{
             $this->vars[$key] = $value;
         }
     }
+
+        /**
+     * Permet de charger un model
+     */
+	function loadModel($name){
+		if(!isset($this->$name)){
+			$file = ROOT.DS.'model'.DS.$name.'.php'; 
+			require_once($file);
+			$this->$name = new $name();
+			if(isset($this->Form)){
+				$this->$name->Form = $this->Form;  
+			}
+		}
+
+	}
 }
