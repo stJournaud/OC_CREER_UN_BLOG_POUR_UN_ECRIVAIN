@@ -42,4 +42,78 @@ class PostsController extends Controller {
         $this->set($d);
     }
 
+    /**
+	* ADMIN  ACTIONS
+	**/
+	/**
+	* Liste les différents articles
+	**/
+    function admin_index() {
+        $perPage = 10;
+        $this->loadModel('Post');
+        $condition = array('type'=>'post');
+        $d['posts'] = $this->Post->find(array(
+            'fields' => 'id,title,online',
+            'conditions' => $condition,
+            'limit' => ($perPage*($this->request->page-1)).','.$perPage
+        ));
+        $d['total'] = $this->Post->findCount($condition);
+        $d['page'] = ceil($d['total']/ $perPage);
+        $this->set($d);
+    }
+
+    /**
+     * Permet d'éditer un article
+     */
+    function admin_edit($id = null){
+        $this->loadModel('Post');
+        $d['id'] = '';
+        if($this->request->data){
+            if($this->Post->validates($this->request->data) && !empty($_FILES['file']['name'])){
+                if(strpos($_FILES['file']['type'], 'image') !== false) {
+                    $dir = WEBROOT.DS.'img'.DS.date('Y-m');
+                    if(!file_exists($dir)) mkdir($dir);
+                    move_uploaded_file($_FILES['file']['tmp_name'], $dir.DS.$_FILES['file']['name']);
+                    $this->request->data->image_name = date('Y-m').'/'.$_FILES['file']['name'];
+                    $this->request->data->type = 'post';
+                    $this->request->data->creationDate = date('Y-m-d h:i:s');
+                    
+                    $this->Post->save($this->request->data);
+                    $this->Session->setFlash('Le contenu a bien été modifié', 'success');
+                    $this->redirect('admin/posts/index');
+                } else {
+                    $this->Form->errors['file'] = "Le fichier n'est pas une image";
+                }
+               
+            } elseif($this->Post->validates($this->request->data) && empty($_FILES['file']['name'])) {
+                    $this->request->data->type = 'post';
+                    $this->request->data->creationDate = date('Y-m-d h:i:s');
+                    
+                    $this->Post->save($this->request->data);
+                    $this->Session->setFlash('Le contenu a bien été modifié', 'success');
+                    $this->redirect('admin/posts/index');
+            } else {
+                $this->Session->setFlash('Merci de corriger vos informations', 'danger');
+
+            }
+        } elseif($id){
+                $this->request->data = $this->Post->findFirst(array(
+                    'conditions' => array('id'=>$id)
+                ));
+                $d['id'] = $id;
+        }
+        
+        $this->set($d);
+    }
+
+    /**
+     * Permet de supprimer un article
+     */
+    function admin_delete($id){
+        $this->loadModel('Post');
+        $this->Post->delete($id);
+        $this->Session->setFlash('Le contenu a bien été supprimé', 'success');
+        $this->redirect('admin/posts/index');
+    }
+
 }

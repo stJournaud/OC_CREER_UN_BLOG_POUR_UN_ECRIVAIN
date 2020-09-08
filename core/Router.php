@@ -1,5 +1,6 @@
 <?php
 class Router {
+
     static $routes = array();
     static $prefixes = array();
 
@@ -85,7 +86,7 @@ class Router {
         self::$routes[] = $r;
     }
 
-    /**
+	/**
 	* Permet de générer une url à partir d'une url originale
 	* controller/action(/:param/:param/:param...)
 	**/
