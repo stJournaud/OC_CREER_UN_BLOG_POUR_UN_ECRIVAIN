@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title><?php echo isset($title_for_layout)?$title_for_layout:'Administration'; ?></title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-    <link rel="stylesheet" href="/newBlog/webroot/css/style.css">
+    <link rel="stylesheet" href="/Blog/webroot/css/style.css">
     <script src="https://cdn.tiny.cloud/1/osr1jeeg3ztursvc3vmcb4spa28qb8hjc29uafhza43idf2a/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 </head>
 <body>
