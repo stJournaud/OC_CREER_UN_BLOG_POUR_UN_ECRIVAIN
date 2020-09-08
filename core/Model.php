@@ -2,7 +2,7 @@
 class Model{
 
     static $connections = array();
-    
+
     public $conf = 'default';
     public $table = false;
     public $db;
@@ -16,37 +16,37 @@ class Model{
 	* Permet d'initialiser les variable du Model
 	**/
     public function __construct(){
-
-    // Nom de la table
-    if($this->table === false){
-        $this->table = strtolower(get_class($this)).'s';
-    }
-
-    // Connection à la base ou récupération de la précédente connection
-    $conf = Conf::$database[$this->conf];
-    if(isset(Model::$connections[$this->conf])) { 
-        $this->db = Model::$connections[$this->conf];
-        return true; 
-    }
-    try{
-        $pdo = new PDO('mysql:host='.$conf['host'].';dbname='.$conf['database'].';',
-        $conf['login'],
-        $conf['password'],
-        array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8')
-    );
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
-        Model::$connections[$this->conf] = $pdo;
-        $this->db = $pdo;
-    }catch(PDOException $e) {
-        if(Conf::$debug >= 1) {
-
         
-        die($e->getMessage());
-        } else {
-        die('Impossible de se connecter à la base de données');
-        } 
-    }
+        // Nom de la table
+        if($this->table === false){
+            $this->table = strtolower(get_class($this)).'s';
+        }
+
+        // Connection à la base ou récupération de la précédente connection
+        $conf = Conf::$database[$this->conf];
+        if(isset(Model::$connections[$this->conf])) { 
+            $this->db = Model::$connections[$this->conf];
+            return true; 
+        }
+        try{
+            $pdo = new PDO('mysql:host='.$conf['host'].';dbname='.$conf['database'].';',
+            $conf['login'],
+            $conf['password'],
+            array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8')
+        );
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
+            Model::$connections[$this->conf] = $pdo;
+            $this->db = $pdo;
+        }catch(PDOException $e) {
+            if(Conf::$debug >= 1) {
+
             
+            die($e->getMessage());
+            } else {
+            die('Impossible de se connecter à la base de données');
+            } 
+        }
+        
     }
 
     /**
@@ -77,8 +77,8 @@ class Model{
 		}
 		return false;
     }
-
-    /**
+    
+	/**
 	* Permet de récupérer plusieurs enregistrements
 	* @param $req Tableau contenant les éléments de la requête
 	**/
@@ -188,5 +188,4 @@ class Model{
             $this->id = $this->db->lastInsertId();
         }
     }
-
 }

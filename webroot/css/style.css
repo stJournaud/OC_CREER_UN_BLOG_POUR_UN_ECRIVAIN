@@ -1,0 +1,41 @@
+body{
+    color: #333333;
+    background: #f2f0eb;
+    height: 100%;
+    font-family: 'Taviraj', serif;
+}
+
+.postImg{
+    min-width: 100%;
+    max-height : 300px;
+}
+
+.card-header {
+    line-height: 5px;
+}
+
+.card-header .btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.card-body {
+    height:85px;
+    line-height:20px; /* Height / no. of lines to display */
+    overflow:hidden;
+}
+
+header {
+    background-color: #f2f0eb;
+    width:100%;
+    text-align:center;
+}
+
+.comment-card {
+    margin: 5px 0;
+}
+
+.card-resume {
+    margin-top: 5px;
+}

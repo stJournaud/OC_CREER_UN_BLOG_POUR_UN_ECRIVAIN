@@ -1,5 +1,6 @@
 <?php
 require 'Session.php';
+require 'Form.php';
 require 'Router.php';
 require 'functions.php';
 

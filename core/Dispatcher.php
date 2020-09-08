@@ -4,9 +4,9 @@
 * Permet de charger le controller en fonction de la requête utilisateur
 **/
 class Dispatcher{
-    
-    var $request;   // Object Request
 
+    var $request;   // Object Request
+    
     /**
 	* Fonction principale du dispatcher
 	* Charge le controller en fonction du routing
@@ -25,7 +25,8 @@ class Dispatcher{
         call_user_func_array(array($controller, $action),$this->request->params);
         $controller->render($action);
     }
-     /**
+    
+    /**
 	* Permet de générer une page d'erreur en cas de problème au niveau du routing (page inexistante)
 	**/
     function error($message) {
@@ -33,8 +34,8 @@ class Dispatcher{
         $controller->Session = new Session();
         $controller->e404($message);
     }
-
-    /**
+    
+	/**
 	* Permet de charger le controller en fonction de la requête utilisateur
 	**/
     function loadController(){
