@@ -99,4 +99,64 @@ class Model{
         
     }
 
+    /**
+	* Alias permettant de retrouver le premier enregistrement
+	**/
+    public function findFirst($req){
+        return current($this->find($req));
+    }
+
+    /**
+	* Récupère le nombre d'enregistrement
+	**/
+    public function findCount($conditions){
+        $res = $this->findFirst(array(
+            'fields' => 'COUNT('.$this->primaryKey.') as count',
+            'conditions' => $conditions
+        ));
+        return $res->count;
+    }
+
+    /**
+	* Permet de supprimer un enregistrement
+	* @param $id ID de l'enregistrement à supprimer
+	**/	
+    public function delete($id){
+        $sql = "DELETE FROM {$this->table} WHERE {$this->primaryKey} = $id ";
+        $this->db->query($sql);
+    }
+
+    /**
+	* Permet de sauvegarder des données
+	* @param $data Données à enregistrer
+	**/
+    public function save($data){
+        $key = $this->primaryKey;
+        $fields = array();
+        $d = array();
+
+        foreach ($data as $k => $v) {
+            if($k != $this->primaryKey){
+            $fields[] = "$k=:$k";
+            $d[":$k"] = $v;
+            } else if(!empty($v)) {
+                $d[":$k"] = $v;
+            }
+        }
+        
+        if(isset($data->$key) && !empty($data->$key)){
+            $sql = 'UPDATE '.$this->table.' SET '.implode(',', $fields).' WHERE ' .$key.'=:'.$key;
+            $this->id = $data->$key;
+            $action = 'update';
+        } else {
+            $sql = 'INSERT INTO '.$this->table.' SET '.implode(',', $fields);
+            $action = 'insert';
+        }
+        $pre = $this->db->prepare($sql);
+        $pre->execute($d);
+        if($action == 'insert'){
+            $this->id = $this->db->lastInsertId();
+        }
+    }
+
 }
