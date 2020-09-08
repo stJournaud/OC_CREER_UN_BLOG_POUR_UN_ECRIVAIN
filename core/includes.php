@@ -1,4 +1,5 @@
 <?php
+require 'Session.php';
 require 'Router.php';
 require 'functions.php';
 
